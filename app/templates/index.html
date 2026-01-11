@@ -1,0 +1,151 @@
+﻿{% extends "base.html" %}
+{% block title %}{{ ui.get("nav_home_label", "Inicio") }} | {{ ui.get("brand_title", "Agencia Contable") }}{% endblock %}
+{% block content %}
+<section class="hero">
+  <div class="container hero-grid">
+    <div class="hero-content" data-reveal>
+      <span class="eyebrow">{{ ui.get("index_eyebrow", "Firma contable en México") }}</span>
+      <h1>{{ content.hero_title }}</h1>
+      <p class="hero-subtitle">{{ content.hero_subtitle }}</p>
+      <div class="hero-actions">
+        <a class="button primary" href="#contact">{{ ui.get("hero_primary_cta", "Agenda una asesoría") }}</a>
+        <a class="button ghost" href="/learn-more">{{ ui.get("hero_secondary_cta", "Explorar contenido") }}</a>
+      </div>
+    </div>
+    <div class="hero-card" data-reveal>
+      <div class="hero-card-inner">
+        <h3>{{ ui.get("hero_card_title", "Respaldo integral") }}</h3>
+        <p>
+          {{ ui.get("hero_card_text", "Coordinamos contabilidad, fiscal y nómina para que tomes decisiones seguras y oportunas.") }}
+        </p>
+        <div class="metrics">
+          <div class="metric">
+            <span class="metric-value" data-target="{{ ui.get('metric_1_value', '350') }}" data-prefix="{{ ui.get('metric_1_prefix', '+') }}" data-suffix="{{ ui.get('metric_1_suffix', '') }}">0</span>
+            <small>{{ ui.get("metric_1_label", "clientes activos") }}</small>
+          </div>
+          <div class="metric">
+            <span class="metric-value" data-target="{{ ui.get('metric_2_value', '12') }}" data-prefix="{{ ui.get('metric_2_prefix', '') }}" data-suffix="{{ ui.get('metric_2_suffix', '') }}">0</span>
+            <small>{{ ui.get("metric_2_label", "trayectoria") }}</small>
+          </div>
+          <div class="metric">
+            <span class="metric-value" data-target="{{ ui.get('metric_3_value', '98') }}" data-prefix="{{ ui.get('metric_3_prefix', '') }}" data-suffix="{{ ui.get('metric_3_suffix', '%') }}">0</span>
+            <small>{{ ui.get("metric_3_label", "satisfacción") }}</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="mission-values">
+  <div class="container">
+    <div class="section-title" data-reveal>
+      <span class="eyebrow">{{ ui.get("index_identity_eyebrow", "Identidad") }}</span>
+      <h2>{{ content.mission_title }} & {{ content.values_title }}</h2>
+    </div>
+    <div class="mission-values-panel" data-reveal>
+      <div class="mv-row">
+        <div class="mv-meta">
+          <span class="mv-index">01</span>
+          <h3>{{ content.mission_title }}</h3>
+        </div>
+        <div class="mv-content">
+          <p>{{ content.mission_text }}</p>
+        </div>
+      </div>
+      <div class="mv-row">
+        <div class="mv-meta">
+          <span class="mv-index">02</span>
+          <h3>{{ content.values_title }}</h3>
+        </div>
+        <div class="mv-content">
+          <p>{{ content.values_text }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="services">
+  <div class="container">
+    <div class="section-title" data-reveal>
+      <span class="eyebrow">{{ ui.get("index_services_eyebrow", "Lo que hacemos") }}</span>
+      <h2>{{ content.services_title }}</h2>
+      <p>{{ ui.get("index_services_intro", "Servicios diseñados para simplificar tu operación y fortalecer tu estrategia.") }}</p>
+    </div>
+    <div class="service-accordion">
+      {% for service in services %}
+      <details class="accordion-item" {% if loop.first %}open{% endif %} data-reveal>
+        <summary>
+          <span>{{ service.title }}</span>
+          <span class="accordion-icon" aria-hidden="true"></span>
+        </summary>
+        <div class="accordion-body">
+          <p>{{ service.description }}</p>
+          <ul>
+            {% for point in service.key_points.split('\n') if point.strip() %}
+            <li>{{ point }}</li>
+            {% endfor %}
+          </ul>
+        </div>
+      </details>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <div class="container contact-grid">
+    <div class="contact-info contact-card" data-reveal>
+      <span class="eyebrow">{{ content.contact_title }}</span>
+      <h2>{{ ui.get("contact_heading", "Hablemos de tu crecimiento") }}</h2>
+      <p>{{ content.contact_text }}</p>
+      <div class="contact-details">
+        <div>
+          <strong>{{ ui.get("contact_label_whatsapp", "WhatsApp") }}</strong>
+          <a class="contact-link" href="{{ whatsapp_link }}" target="_blank" rel="noreferrer">{{ ui.get("contact_direct_label", "Contacto Directo") }}</a>
+        </div>
+        <div>
+          <strong>{{ ui.get("contact_label_email", "Email") }}</strong>
+          <a class="contact-link" href="mailto:{{ settings.contact_email }}">{{ settings.contact_email }}</a>
+        </div>
+        <div>
+          <strong>{{ ui.get("contact_label_phone", "Teléfono") }}</strong>
+          <span>{{ settings.phone_number }}</span>
+        </div>
+        <div>
+          <strong>{{ ui.get("contact_label_address", "Dirección") }}</strong>
+          <span>{{ settings.address_text }}</span>
+        </div>
+      </div>
+      <div class="social-row">
+        <a href="{{ settings.social_facebook }}" target="_blank" rel="noreferrer">{{ ui.get("social_label_facebook", "Facebook") }}</a>
+        <a href="{{ settings.social_instagram }}" target="_blank" rel="noreferrer">{{ ui.get("social_label_instagram", "Instagram") }}</a>
+        <a href="{{ settings.social_x }}" target="_blank" rel="noreferrer">{{ ui.get("social_label_x", "X") }}</a>
+        <a href="{{ settings.social_linkedin }}" target="_blank" rel="noreferrer">{{ ui.get("social_label_linkedin", "LinkedIn") }}</a>
+      </div>
+    </div>
+    <form class="contact-form" method="post" action="/contact" data-reveal>
+      <h3>{{ ui.get("contact_form_heading", "Envíanos un mensaje") }}</h3>
+      {% if contact_status == 'sent' %}
+      <div class="alert success">{{ ui.get("contact_alert_sent", "Mensaje enviado. Te responderemos pronto.") }}</div>
+      {% elif contact_status == 'pending' %}
+      <div class="alert">{{ ui.get("contact_alert_pending", "Mensaje registrado. Configura el correo SMTP para envío automático.") }}</div>
+      {% endif %}
+      <label>
+        {{ ui.get("contact_label_name", "Nombre") }}
+        <input type="text" name="name" required />
+      </label>
+      <label>
+        {{ ui.get("contact_label_email_field", "Correo") }}
+        <input type="email" name="email" required />
+      </label>
+      <label>
+        {{ ui.get("contact_label_message", "Mensaje") }}
+        <textarea name="message" rows="5" required></textarea>
+      </label>
+      <button class="button primary" type="submit">{{ ui.get("contact_button_label", "Enviar") }}</button>
+    </form>
+  </div>
+</section>
+{% endblock %}

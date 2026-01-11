@@ -1,0 +1,134 @@
+{% extends "admin/base.html" %}
+{% block title %}Editar Nosotros{% endblock %}
+{% block content %}
+<section class="admin-section">
+  <div class="section-title">
+    <span class="eyebrow">Nosotros</span>
+    <h1>Página Nosotros</h1>
+    <p>Actualiza la historia, el encabezado del equipo y la información de ubicación.</p>
+  </div>
+  {% if request.query_params.get('updated') %}
+  <div class="status-banner success">Contenido actualizado.</div>
+  {% endif %}
+  <form method="post" action="/admin/about" class="form-grid">
+    <div class="form-card">
+      <h2>Historia</h2>
+      <label class="field">
+        <span>Título principal</span>
+        <input type="text" name="title" value="{{ content.title }}" required />
+      </label>
+      <label class="field">
+        <span>Historia</span>
+        <textarea name="story_text" rows="5" required>{{ content.story_text }}</textarea>
+      </label>
+    </div>
+    <div class="form-card">
+      <h2>Equipo</h2>
+      <label class="field">
+        <span>Título equipo</span>
+        <input type="text" name="team_title" value="{{ content.team_title }}" required />
+      </label>
+      <p class="form-hint">El texto introductorio del equipo se edita en Contenido.</p>
+    </div>
+    <div class="form-card">
+      <h2>Ubicación</h2>
+      <label class="field">
+        <span>Eyebrow ubicación</span>
+        <input type="text" name="location_title" value="{{ content.location_title }}" required />
+      </label>
+      <label class="field">
+        <span>Enlace de Google Maps (embed)</span>
+        <input type="text" name="location_map_url" value="{{ content.location_map_url }}" required />
+      </label>
+      <p class="form-hint">Pega el enlace de Google Maps con output=embed.</p>
+    </div>
+    <div class="form-actions">
+      <button class="button primary" type="submit">Guardar cambios</button>
+    </div>
+  </form>
+</section>
+
+<section class="admin-section">
+  <div class="section-title">
+    <h2>Equipo</h2>
+    <p>Gestiona los integrantes que aparecen en la página.</p>
+  </div>
+  {% if request.query_params.get('team') %}
+  <div class="status-banner success">Equipo actualizado.</div>
+  {% endif %}
+  <div class="list-grid">
+    {% for member in team %}
+    <form class="list-card" method="post" enctype="multipart/form-data" action="/admin/team/{{ member.id }}/update">
+      <div class="card-header">
+        <div>
+          <span class="eyebrow">Integrante</span>
+          <h3>{{ member.name }}</h3>
+        </div>
+        <span class="pill">ID {{ member.id }}</span>
+      </div>
+      <div class="media-preview">
+        {% if member.image_url %}
+        <img src="{{ member.image_url }}" alt="{{ member.name }}" />
+        {% else %}
+        <div class="media-placeholder">Sin foto</div>
+        {% endif %}
+      </div>
+      <label class="field">
+        <span>Nombre</span>
+        <input type="text" name="name" value="{{ member.name }}" required />
+      </label>
+      <label class="field">
+        <span>Rol</span>
+        <input type="text" name="role" value="{{ member.role }}" required />
+      </label>
+      <label class="field">
+        <span>Biografía</span>
+        <textarea name="bio" rows="3" required>{{ member.bio }}</textarea>
+      </label>
+      <label class="field">
+        <span>Foto (opcional)</span>
+        <input type="file" name="image" accept="image/*" />
+      </label>
+      <div class="inline-actions">
+        <button class="button ghost" type="submit">Actualizar</button>
+        <button
+          class="button danger"
+          type="submit"
+          formaction="/admin/team/{{ member.id }}/delete"
+          formmethod="post"
+          data-confirm="¿Eliminar integrante?"
+        >
+          Eliminar
+        </button>
+      </div>
+    </form>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="admin-section">
+  <div class="section-title">
+    <h2>Agregar integrante</h2>
+    <p>Crea un nuevo perfil para el equipo.</p>
+  </div>
+  <form class="form-card" method="post" enctype="multipart/form-data" action="/admin/team/create">
+    <label class="field">
+      <span>Nombre</span>
+      <input type="text" name="name" required />
+    </label>
+    <label class="field">
+      <span>Rol</span>
+      <input type="text" name="role" required />
+    </label>
+    <label class="field">
+      <span>Biografía</span>
+      <textarea name="bio" rows="3" required></textarea>
+    </label>
+    <label class="field">
+      <span>Foto (opcional)</span>
+      <input type="file" name="image" accept="image/*" />
+    </label>
+    <button class="button primary" type="submit">Crear integrante</button>
+  </form>
+</section>
+{% endblock %}

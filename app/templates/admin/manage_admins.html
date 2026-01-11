@@ -1,0 +1,72 @@
+{% extends "admin/base.html" %}
+{% block title %}Administradores{% endblock %}
+{% block content %}
+<section class="admin-section">
+  <div class="section-title">
+    <span class="eyebrow">Usuarios</span>
+    <h1>Administradores</h1>
+    <p>Gestiona accesos, contraseñas y roles internos.</p>
+  </div>
+  {% if request.query_params.get('error') == 'exists' %}
+  <div class="status-banner error">El usuario ya existe.</div>
+  {% endif %}
+  {% if request.query_params.get('created') %}
+  <div class="status-banner success">Administrador creado.</div>
+  {% endif %}
+  {% if request.query_params.get('updated') %}
+  <div class="status-banner success">Contraseña actualizada.</div>
+  {% endif %}
+  {% if request.query_params.get('deleted') %}
+  <div class="status-banner success">Administrador eliminado.</div>
+  {% endif %}
+  <div class="list-grid">
+    {% for item in admins %}
+    <div class="list-card">
+      <div class="card-header">
+        <div>
+          <span class="eyebrow">Cuenta</span>
+          <h3>{{ item.username }}</h3>
+        </div>
+        <span class="pill">{% if item.is_super %}Super admin{% else %}Admin{% endif %}</span>
+      </div>
+      {% if admin.is_super %}
+      <form method="post" action="/admin/admins/{{ item.id }}/update">
+        <label class="field">
+          <span>Nueva contraseña</span>
+          <input type="password" name="password" required />
+        </label>
+        <button class="button ghost small" type="submit">Actualizar</button>
+      </form>
+      {% if not item.is_super %}
+      <form method="post" action="/admin/admins/{{ item.id }}/delete">
+        <button class="button danger small" type="submit" data-confirm="¿Eliminar admin?">Eliminar</button>
+      </form>
+      {% endif %}
+      {% else %}
+      <p class="form-hint">Solo un super admin puede modificar contraseñas.</p>
+      {% endif %}
+    </div>
+    {% endfor %}
+  </div>
+</section>
+
+{% if admin.is_super %}
+<section class="admin-section">
+  <div class="section-title">
+    <h2>Crear administrador</h2>
+    <p>Agrega un nuevo usuario con acceso al dashboard.</p>
+  </div>
+  <form class="form-card" method="post" action="/admin/admins/create">
+    <label class="field">
+      <span>Usuario</span>
+      <input type="text" name="username" required />
+    </label>
+    <label class="field">
+      <span>Contraseña</span>
+      <input type="password" name="password" required />
+    </label>
+    <button class="button primary" type="submit">Crear admin</button>
+  </form>
+</section>
+{% endif %}
+{% endblock %}

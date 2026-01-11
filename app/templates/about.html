@@ -1,0 +1,66 @@
+﻿{% extends "base.html" %}
+{% block title %}{{ ui.get("nav_about_label", "Nosotros") }} | {{ ui.get("brand_title", "Agencia Contable") }}{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container" data-reveal>
+    <span class="eyebrow">{{ ui.get("about_eyebrow", "Nosotros") }}</span>
+    <h1>{{ content.title }}</h1>
+    <p>{{ content.story_text }}</p>
+  </div>
+</section>
+
+<section class="team">
+  <div class="container">
+    <div class="team-header" data-reveal>
+      <span class="team-eyebrow">{{ ui.get("team_eyebrow", "Personas") }}</span>
+      <span class="team-index">{{ ui.get("team_index", "2.0") }}</span>
+    </div>
+    <div class="team-layout">
+      <div class="team-text" data-reveal>
+        <h2>{{ content.team_title }}</h2>
+        <p class="team-intro">{{ ui.get("team_intro", "Profesionales con experiencia en contabilidad, fiscal y estrategia financiera.") }}</p>
+        {% set first_member = team|first %}
+        <div class="team-detail">
+          {% if first_member %}
+          <h3 class="team-name">{{ first_member.name }}</h3>
+          <span class="team-role">{{ first_member.role }}</span>
+          <p class="team-bio">{{ first_member.bio }}</p>
+          {% else %}
+          <p class="team-bio">{{ ui.get("team_empty", "Nuestro equipo esta en crecimiento.") }}</p>
+          {% endif %}
+        </div>
+      </div>
+      <div class="team-gallery">
+        {% for member in team %}
+        <figure class="team-portrait" data-name="{{ member.name }}" data-role="{{ member.role }}" data-bio="{{ member.bio }}" tabindex="0" role="button" aria-label="Perfil de {{ member.name }}" data-reveal>
+          {% if member.image_url %}
+          <img src="{{ member.image_url }}" alt="{{ member.name }}" />
+          {% else %}
+          <div class="team-placeholder">{{ member.name[0] }}</div>
+          {% endif %}
+        </figure>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="location">
+  <div class="container" data-reveal>
+    <span class="eyebrow">{{ content.location_title }}</span>
+    <h2>{{ ui.get("location_heading", "Estamos en el corazón financiero") }}</h2>
+    <p>{{ ui.get("location_intro", "Visítanos en nuestras oficinas o agenda una reunión virtual con el equipo.") }}</p>
+    <div class="location-address">
+      <span class="location-label">{{ ui.get("contact_label_address", "Dirección") }}</span>
+      <span class="location-text">{{ settings.address_text }}</span>
+    </div>
+    <div class="map-wrapper">
+      <iframe
+        src="{{ map_url }}"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"
+      ></iframe>
+    </div>
+  </div>
+</section>
+{% endblock %}

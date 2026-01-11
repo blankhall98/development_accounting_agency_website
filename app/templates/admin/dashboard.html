@@ -1,0 +1,76 @@
+{% extends "admin/base.html" %}
+{% block title %}Dashboard | Admin{% endblock %}
+{% block content %}
+<section class="admin-hero">
+  <div class="admin-hero-content">
+    <span class="eyebrow">Panel</span>
+    <h1>Panel de control</h1>
+    <p>Gestiona el contenido público y la operación del sitio.</p>
+    <div class="admin-hero-actions">
+      <a class="button primary" href="/admin/site-copy">Editar contenido</a>
+      <a class="button ghost" href="/admin/index">Gestionar inicio</a>
+    </div>
+  </div>
+  <div class="admin-hero-card">
+    <div class="admin-hero-profile">
+      <div class="profile-mark">{{ admin.username[:2]|upper }}</div>
+      <div class="profile-text">
+        <span class="pill">Usuario activo</span>
+        <strong>{{ admin.username }}</strong>
+        <span class="admin-hero-role">
+          {% if admin.is_super %}Super admin{% else %}Admin{% endif %}
+        </span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="admin-section admin-section--spaced">
+  <div class="section-title section-title--accent">
+    <h2>Accesos rápidos</h2>
+    <p>Edita las secciones principales y el contenido editorial desde un solo lugar.</p>
+  </div>
+  <div class="admin-grid">
+    <a class="admin-card" href="/admin/index">
+      <h3>Inicio</h3>
+      <p>Hero, misión, valores, servicios y contacto.</p>
+      <div class="admin-card-footer">
+        <span>Gestionar</span>
+        <span class="card-arrow">&gt;</span>
+      </div>
+    </a>
+    <a class="admin-card" href="/admin/about">
+      <h3>Nosotros</h3>
+      <p>Historia, equipo, ubicación y mapa.</p>
+      <div class="admin-card-footer">
+        <span>Gestionar</span>
+        <span class="card-arrow">&gt;</span>
+      </div>
+    </a>
+    <a class="admin-card" href="/admin/learn-more">
+      <h3>Aprende más</h3>
+      <p>Publicaciones, multimedia y portada editorial.</p>
+      <div class="admin-card-footer">
+        <span>Gestionar</span>
+        <span class="card-arrow">&gt;</span>
+      </div>
+    </a>
+    <a class="admin-card" href="/admin/site-copy">
+      <h3>Contenido general</h3>
+      <p>Navegación, botones, etiquetas y mensajes.</p>
+      <div class="admin-card-footer">
+        <span>Gestionar</span>
+        <span class="card-arrow">&gt;</span>
+      </div>
+    </a>
+    <a class="admin-card" href="/admin/admins">
+      <h3>Administradores</h3>
+      <p>Gestiona usuarios internos y permisos.</p>
+      <div class="admin-card-footer">
+        <span>Gestionar</span>
+        <span class="card-arrow">&gt;</span>
+      </div>
+    </a>
+  </div>
+</section>
+{% endblock %}

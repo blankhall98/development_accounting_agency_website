@@ -1,0 +1,170 @@
+{% extends "admin/base.html" %}
+{% block title %}Editar Inicio{% endblock %}
+{% block content %}
+<section class="admin-section">
+  <div class="section-title">
+    <span class="eyebrow">Inicio</span>
+    <h1>Página de inicio</h1>
+    <p>Actualiza el mensaje principal y la información de contacto. Los textos de botones y etiquetas están en Contenido.</p>
+  </div>
+  {% if request.query_params.get('updated') %}
+  <div class="status-banner success">Contenido actualizado.</div>
+  {% endif %}
+  <form method="post" action="/admin/index" class="form-grid">
+    <div class="form-card">
+      <h2>Hero principal</h2>
+      <label class="field">
+        <span>Título principal</span>
+        <input type="text" name="hero_title" value="{{ content.hero_title }}" required />
+      </label>
+      <label class="field">
+        <span>Subtítulo</span>
+        <textarea name="hero_subtitle" rows="3" required>{{ content.hero_subtitle }}</textarea>
+      </label>
+      <p class="form-hint">Los textos de botones y métricas se editan en Contenido.</p>
+    </div>
+    <div class="form-card">
+      <h2>Misión y valores</h2>
+      <label class="field">
+        <span>Título misión</span>
+        <input type="text" name="mission_title" value="{{ content.mission_title }}" required />
+      </label>
+      <label class="field">
+        <span>Texto misión</span>
+        <textarea name="mission_text" rows="4" required>{{ content.mission_text }}</textarea>
+      </label>
+      <label class="field">
+        <span>Título valores</span>
+        <input type="text" name="values_title" value="{{ content.values_title }}" required />
+      </label>
+      <label class="field">
+        <span>Texto valores</span>
+        <textarea name="values_text" rows="4" required>{{ content.values_text }}</textarea>
+      </label>
+    </div>
+    <div class="form-card">
+      <h2>Servicios y contacto</h2>
+      <label class="field">
+        <span>Título servicios</span>
+        <input type="text" name="services_title" value="{{ content.services_title }}" required />
+      </label>
+      <label class="field">
+        <span>Título contacto</span>
+        <input type="text" name="contact_title" value="{{ content.contact_title }}" required />
+      </label>
+      <label class="field">
+        <span>Texto contacto</span>
+        <textarea name="contact_text" rows="3" required>{{ content.contact_text }}</textarea>
+      </label>
+      <p class="form-hint">Etiquetas y mensajes del formulario se editan en Contenido.</p>
+    </div>
+    <div class="form-card">
+      <h2>Datos de contacto</h2>
+      <label class="field">
+        <span>Email principal</span>
+        <input type="email" name="contact_email" value="{{ settings.contact_email }}" required />
+      </label>
+      <label class="field">
+        <span>WhatsApp</span>
+        <input type="text" name="whatsapp_number" value="{{ settings.whatsapp_number }}" required />
+      </label>
+      <label class="field">
+        <span>Teléfono</span>
+        <input type="text" name="phone_number" value="{{ settings.phone_number }}" required />
+      </label>
+      <label class="field">
+        <span>Dirección</span>
+        <input type="text" name="address_text" value="{{ settings.address_text }}" required />
+      </label>
+      <label class="field">
+        <span>Facebook</span>
+        <input type="url" name="social_facebook" value="{{ settings.social_facebook }}" />
+      </label>
+      <label class="field">
+        <span>Instagram</span>
+        <input type="url" name="social_instagram" value="{{ settings.social_instagram }}" />
+      </label>
+      <label class="field">
+        <span>X</span>
+        <input type="url" name="social_x" value="{{ settings.social_x }}" />
+      </label>
+      <label class="field">
+        <span>LinkedIn</span>
+        <input type="url" name="social_linkedin" value="{{ settings.social_linkedin }}" />
+      </label>
+    </div>
+    <div class="form-actions">
+      <button class="button primary" type="submit">Guardar cambios</button>
+    </div>
+  </form>
+</section>
+
+<section class="admin-section">
+  <div class="section-title">
+    <h2>Servicios</h2>
+    <p>Agrega, edita o elimina los servicios del acordeón en la página principal.</p>
+  </div>
+  {% if request.query_params.get('services') %}
+  <div class="status-banner success">Servicios actualizados.</div>
+  {% endif %}
+  <div class="list-grid">
+    {% for service in services %}
+    <form class="list-card" method="post" action="/admin/services/{{ service.id }}/update">
+      <div class="card-header">
+        <div>
+          <span class="eyebrow">Servicio</span>
+          <h3>{{ service.title }}</h3>
+        </div>
+        <span class="pill">ID {{ service.id }}</span>
+      </div>
+      <label class="field">
+        <span>Título</span>
+        <input type="text" name="title" value="{{ service.title }}" required />
+      </label>
+      <label class="field">
+        <span>Descripción</span>
+        <textarea name="description" rows="3" required>{{ service.description }}</textarea>
+      </label>
+      <label class="field">
+        <span>Puntos clave (uno por línea)</span>
+        <textarea name="key_points" rows="3">{{ service.key_points }}</textarea>
+      </label>
+      <div class="inline-actions">
+        <button class="button ghost" type="submit">Actualizar</button>
+        <button
+          class="button danger"
+          type="submit"
+          formaction="/admin/services/{{ service.id }}/delete"
+          formmethod="post"
+          data-confirm="¿Eliminar servicio?"
+        >
+          Eliminar
+        </button>
+      </div>
+    </form>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="admin-section">
+  <div class="section-title">
+    <h2>Agregar servicio</h2>
+    <p>Crea una nueva entrada para el acordeón de servicios.</p>
+  </div>
+  <form class="form-card" method="post" action="/admin/services/create">
+    <label class="field">
+      <span>Título</span>
+      <input type="text" name="title" required />
+    </label>
+    <label class="field">
+      <span>Descripción</span>
+      <textarea name="description" rows="3" required></textarea>
+    </label>
+    <label class="field">
+      <span>Puntos clave (uno por línea)</span>
+      <textarea name="key_points" rows="3"></textarea>
+    </label>
+    <button class="button primary" type="submit">Crear servicio</button>
+  </form>
+</section>
+{% endblock %}

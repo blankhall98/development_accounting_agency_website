@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Acceso Administrador</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Sora:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/admin.css" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-background"></div>
+    <main class="login">
+      <div class="login-card">
+        <span class="eyebrow">Acceso</span>
+        <h1>Panel administrativo</h1>
+        <p>Ingresa con tus credenciales para gestionar el sitio.</p>
+        {% if error %}
+        <div class="status-banner error">{{ error }}</div>
+        {% endif %}
+        <form method="post" action="/admin/login">
+          <label class="field">
+            <span>Usuario</span>
+            <input type="text" name="username" required />
+          </label>
+          <label class="field">
+            <span>Contraseña</span>
+            <input type="password" name="password" required />
+          </label>
+          <button type="submit" class="button primary">Entrar</button>
+        </form>
+        <a class="back-link" href="/">Volver al sitio</a>
+      </div>
+    </main>
+  </body>
+</html>

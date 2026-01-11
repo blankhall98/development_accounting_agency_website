@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Dashboard{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Sora:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/admin.css" />
+  </head>
+  <body class="admin-body">
+    <div class="admin-background"></div>
+    <header class="admin-header">
+      <div class="admin-bar">
+        <a class="admin-brand brand-link" href="/admin">
+          <span class="brand-mark">{{ ui.get("brand_mark", "AC") }}</span>
+          <div>
+            <div class="brand-title">{{ ui.get("brand_title", "Agencia Contable") }}</div>
+            <div class="brand-subtitle">Panel administrativo</div>
+          </div>
+        </a>
+        <nav class="admin-nav">
+          <a href="/admin" class="{% if request.url.path == '/admin' %}active{% endif %}">Resumen</a>
+          <a href="/admin/index" class="{% if request.url.path == '/admin/index' %}active{% endif %}">Inicio</a>
+          <a href="/admin/about" class="{% if request.url.path == '/admin/about' %}active{% endif %}">Nosotros</a>
+          <a href="/admin/learn-more" class="{% if request.url.path == '/admin/learn-more' %}active{% endif %}">Aprende más</a>
+          <a href="/admin/site-copy" class="{% if request.url.path == '/admin/site-copy' %}active{% endif %}">Contenido</a>
+          <a href="/admin/admins" class="{% if request.url.path == '/admin/admins' %}active{% endif %}">Admins</a>
+        </nav>
+        <div class="admin-utils">
+          <a href="/" target="_blank" rel="noreferrer">Ver sitio</a>
+          <a href="/admin/logout">Salir</a>
+        </div>
+      </div>
+    </header>
+
+    <main class="admin-main">
+      {% block content %}{% endblock %}
+    </main>
+
+    <script src="/static/js/admin.js"></script>
+  </body>
+</html>

@@ -1,0 +1,137 @@
+{% extends "admin/base.html" %}
+{% block title %}Editar Aprende más{% endblock %}
+{% block content %}
+<section class="admin-section">
+  <div class="section-title">
+    <span class="eyebrow">Aprende más</span>
+    <h1>Página Aprende más</h1>
+    <p>Gestiona el contenido editorial y las publicaciones.</p>
+  </div>
+  {% if request.query_params.get('updated') %}
+  <div class="status-banner success">Contenido actualizado.</div>
+  {% endif %}
+  <form class="form-card" method="post" action="/admin/learn-more">
+    <label class="field">
+      <span>Título principal</span>
+      <input type="text" name="title" value="{{ content.title }}" required />
+    </label>
+    <label class="field">
+      <span>Texto introductorio</span>
+      <textarea name="intro_text" rows="4" required>{{ content.intro_text }}</textarea>
+    </label>
+    <p class="form-hint">El eyebrow y la etiqueta del botón se editan en Contenido.</p>
+    <button class="button primary" type="submit">Guardar cambios</button>
+  </form>
+</section>
+
+<section class="admin-section">
+  <div class="section-title">
+    <h2>Publicaciones</h2>
+    <p>Administra las publicaciones visibles en la página.</p>
+  </div>
+  {% if request.query_params.get('posts') %}
+  <div class="status-banner success">Publicaciones actualizadas.</div>
+  {% endif %}
+  <div class="list-grid">
+    {% for post in posts %}
+    <form class="list-card" method="post" enctype="multipart/form-data" action="/admin/posts/{{ post.id }}/update">
+      <div class="card-header">
+        <div>
+          <span class="eyebrow">Publicación</span>
+          <h3>{{ post.title }}</h3>
+        </div>
+        <span class="pill">{% if post.is_published %}Publicado{% else %}Borrador{% endif %}</span>
+      </div>
+      {% if post.content_url %}
+      <div class="link-preview">
+        <span>Contenido actual</span>
+        <a href="{{ post.content_url }}" target="_blank" rel="noreferrer">Abrir</a>
+      </div>
+      {% endif %}
+      <label class="field">
+        <span>Título</span>
+        <input type="text" name="title" value="{{ post.title }}" required />
+      </label>
+      <label class="field">
+        <span>Descripción</span>
+        <textarea name="description" rows="3" required>{{ post.description }}</textarea>
+      </label>
+      <label class="field">
+        <span>Tipo de contenido</span>
+        <select name="content_type">
+          <option value="none" {% if post.content_type == 'none' %}selected{% endif %}>Sin contenido</option>
+          <option value="image" {% if post.content_type == 'image' %}selected{% endif %}>Imagen</option>
+          <option value="video" {% if post.content_type == 'video' %}selected{% endif %}>Video</option>
+          <option value="youtube" {% if post.content_type == 'youtube' %}selected{% endif %}>YouTube (link)</option>
+          <option value="social" {% if post.content_type == 'social' %}selected{% endif %}>Publicación social (link)</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Link (YouTube o red social)</span>
+        <input type="text" name="content_url" value="{{ post.content_url }}" />
+      </label>
+      <label class="field">
+        <span>Archivo (imagen o video)</span>
+        <input type="file" name="content_file" />
+      </label>
+      <label class="checkbox">
+        <input type="checkbox" name="is_published" {% if post.is_published %}checked{% endif %} />
+        Publicar
+      </label>
+      <div class="inline-actions">
+        <button class="button ghost" type="submit">Actualizar</button>
+        <button
+          class="button danger"
+          type="submit"
+          formaction="/admin/posts/{{ post.id }}/delete"
+          formmethod="post"
+          data-confirm="¿Eliminar publicación?"
+        >
+          Eliminar
+        </button>
+      </div>
+    </form>
+    {% endfor %}
+  </div>
+</section>
+
+<section class="admin-section">
+  <div class="section-title">
+    <h2>Nueva publicación</h2>
+    <p>Crea un nuevo post con contenido multimedia o links externos.</p>
+  </div>
+  <form class="form-card" method="post" enctype="multipart/form-data" action="/admin/posts/create">
+    <label class="field">
+      <span>Título</span>
+      <input type="text" name="title" required />
+    </label>
+    <label class="field">
+      <span>Descripción</span>
+      <textarea name="description" rows="3" required></textarea>
+    </label>
+    <label class="field">
+      <span>Tipo de contenido</span>
+      <select name="content_type">
+        <option value="none">Sin contenido</option>
+        <option value="image">Imagen</option>
+        <option value="video">Video</option>
+        <option value="youtube">YouTube (link)</option>
+        <option value="social">Publicación social (link)</option>
+      </select>
+    </label>
+    <label class="field">
+      <span>Link (YouTube o red social)</span>
+      <input type="text" name="content_url" />
+    </label>
+    <label class="field">
+      <span>Archivo (imagen o video)</span>
+      <input type="file" name="content_file" />
+    </label>
+    <label class="checkbox">
+      <input type="checkbox" name="is_published" checked />
+      Publicar
+    </label>
+    <button class="button primary" type="submit">Crear publicación</button>
+  </form>
+</section>
+{% endblock %}

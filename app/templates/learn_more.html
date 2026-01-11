@@ -1,0 +1,49 @@
+﻿{% extends "base.html" %}
+{% block title %}{{ ui.get("nav_learn_label", "Aprende más") }} | {{ ui.get("brand_title", "Agencia Contable") }}{% endblock %}
+{% block content %}
+<section class="page-hero">
+  <div class="container" data-reveal>
+    <span class="eyebrow">{{ ui.get("learn_more_eyebrow", "Conocimiento") }}</span>
+    <h1>{{ content.title }}</h1>
+    <p>{{ content.intro_text }}</p>
+  </div>
+</section>
+
+<section class="posts">
+  <div class="container">
+    <div class="post-grid">
+      {% for post in posts %}
+      <article class="post-card" data-reveal>
+        <div class="post-body">
+          <h3>{{ post.title }}</h3>
+          <p>{{ post.description }}</p>
+        </div>
+        {% if post.content_type == 'image' and post.content_url %}
+        <div class="post-media">
+          <img src="{{ post.content_url }}" alt="{{ post.title }}" />
+        </div>
+        {% elif post.content_type == 'video' and post.content_url %}
+        <div class="post-media">
+          <video controls src="{{ post.content_url }}"></video>
+        </div>
+        {% elif post.content_type == 'youtube' and post.content_url %}
+        <div class="post-media">
+          <iframe
+            src="{{ post.content_url }}"
+            title="{{ post.title }}"
+            frameborder="0"
+            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+            allowfullscreen
+          ></iframe>
+        </div>
+        {% elif post.content_type == 'social' and post.content_url %}
+        <div class="post-media link-card">
+          <a href="{{ post.content_url }}" target="_blank" rel="noreferrer">{{ ui.get("learn_more_link_label", "Ver publicación") }}</a>
+        </div>
+        {% endif %}
+      </article>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endblock %}

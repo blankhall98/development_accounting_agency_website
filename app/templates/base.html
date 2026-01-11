@@ -1,0 +1,67 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>{% block title %}Agencia Contable{% endblock %}</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600&family=Sora:wght@300;400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="/static/css/main.css" />
+    {% block head %}{% endblock %}
+  </head>
+  <body class="page">
+    <div class="page-background"></div>
+    <header class="site-header">
+      <div class="container nav-bar">
+        <a class="brand brand-link" href="/">
+          <span class="brand-mark">{{ ui.get("brand_mark", "AC") }}</span>
+          <div>
+            <div class="brand-title">{{ ui.get("brand_title", "Agencia Contable") }}</div>
+            <div class="brand-subtitle">{{ ui.get("brand_subtitle", "Estrategia financiera en México") }}</div>
+          </div>
+        </a>
+        <nav class="nav-links">
+          <a href="/" class="{% if request.url.path == '/' %}active{% endif %}">{{ ui.get("nav_home_label", "Inicio") }}</a>
+          <a href="/about" class="{% if request.url.path == '/about' %}active{% endif %}">{{ ui.get("nav_about_label", "Nosotros") }}</a>
+          <a href="/learn-more" class="{% if request.url.path == '/learn-more' %}active{% endif %}">{{ ui.get("nav_learn_label", "Aprende más") }}</a>
+          <a href="#contact" class="nav-cta">{{ ui.get("nav_contact_label", "Contactar") }}</a>
+        </nav>
+      </div>
+    </header>
+
+    <main>
+      {% block content %}{% endblock %}
+    </main>
+
+    <footer class="site-footer">
+      <div class="container footer-grid">
+        <div>
+          <div class="footer-title">{{ ui.get("footer_title", "Atención directa") }}</div>
+          <p>{{ ui.get("footer_text", "Agenda una cita con nuestro equipo y recibe un diagnóstico inicial.") }}</p>
+        </div>
+        <div>
+          <div class="footer-title">{{ ui.get("footer_contact_title", "Contacto") }}</div>
+          <p>{{ settings.phone_number if settings else '' }}</p>
+          <p>{{ settings.contact_email if settings else '' }}</p>
+        </div>
+        <div>
+          <div class="footer-title">{{ ui.get("footer_social_title", "Redes") }}</div>
+          <div class="footer-links">
+            <a href="{{ settings.social_facebook if settings else '#' }}" target="_blank" rel="noreferrer">{{ ui.get("social_label_facebook", "Facebook") }}</a>
+            <a href="{{ settings.social_instagram if settings else '#' }}" target="_blank" rel="noreferrer">{{ ui.get("social_label_instagram", "Instagram") }}</a>
+            <a href="{{ settings.social_x if settings else '#' }}" target="_blank" rel="noreferrer">{{ ui.get("social_label_x", "X") }}</a>
+            <a href="{{ settings.social_linkedin if settings else '#' }}" target="_blank" rel="noreferrer">{{ ui.get("social_label_linkedin", "LinkedIn") }}</a>
+          </div>
+        </div>
+      </div>
+      <div class="footer-bottom">{{ ui.get("footer_bottom", "© 2026 Agencia Contable. Todos los derechos reservados.") }}</div>
+    </footer>
+
+    <script src="/static/js/main.js"></script>
+    {% block scripts %}{% endblock %}
+  </body>
+</html>

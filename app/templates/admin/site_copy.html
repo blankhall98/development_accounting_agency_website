@@ -1,0 +1,302 @@
+{% extends "admin/base.html" %}
+{% block title %}Contenido general{% endblock %}
+{% block content %}
+<section class="admin-section">
+  <div class="section-title">
+    <span class="eyebrow">Contenido</span>
+    <h1>Contenido general</h1>
+    <p>Edita textos globales del sitio: navegación, botones, etiquetas y mensajes.</p>
+  </div>
+  {% if request.query_params.get('updated') %}
+  <div class="status-banner success">Contenido actualizado.</div>
+  {% endif %}
+  <form method="post" action="/admin/site-copy" class="form-stack">
+    <div class="form-card">
+      <h2>Marca y navegación</h2>
+      <div class="form-grid">
+        <label class="field">
+          <span>Iniciales del logo</span>
+          <input type="text" name="brand_mark" value="{{ ui.get('brand_mark', 'AC') }}" />
+        </label>
+        <label class="field">
+          <span>Nombre de marca</span>
+          <input type="text" name="brand_title" value="{{ ui.get('brand_title', 'Agencia Contable') }}" />
+        </label>
+        <label class="field">
+          <span>Subtítulo</span>
+          <input type="text" name="brand_subtitle" value="{{ ui.get('brand_subtitle', 'Estrategia financiera en México') }}" />
+        </label>
+        <label class="field">
+          <span>Nav: Inicio</span>
+          <input type="text" name="nav_home_label" value="{{ ui.get('nav_home_label', 'Inicio') }}" />
+        </label>
+        <label class="field">
+          <span>Nav: Nosotros</span>
+          <input type="text" name="nav_about_label" value="{{ ui.get('nav_about_label', 'Nosotros') }}" />
+        </label>
+        <label class="field">
+          <span>Nav: Aprende más</span>
+          <input type="text" name="nav_learn_label" value="{{ ui.get('nav_learn_label', 'Aprende más') }}" />
+        </label>
+        <label class="field">
+          <span>Nav: Contacto</span>
+          <input type="text" name="nav_contact_label" value="{{ ui.get('nav_contact_label', 'Contactar') }}" />
+        </label>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Hero y destacados</h2>
+      <div class="form-grid">
+        <label class="field field--full">
+          <span>Eyebrow principal</span>
+          <input type="text" name="index_eyebrow" value="{{ ui.get('index_eyebrow', 'Firma contable en México') }}" />
+        </label>
+        <label class="field">
+          <span>Botón principal</span>
+          <input type="text" name="hero_primary_cta" value="{{ ui.get('hero_primary_cta', 'Agenda una asesoría') }}" />
+        </label>
+        <label class="field">
+          <span>Botón secundario</span>
+          <input type="text" name="hero_secondary_cta" value="{{ ui.get('hero_secondary_cta', 'Explorar contenido') }}" />
+        </label>
+        <label class="field">
+          <span>Título tarjeta</span>
+          <input type="text" name="hero_card_title" value="{{ ui.get('hero_card_title', 'Respaldo integral') }}" />
+        </label>
+        <label class="field field--full">
+          <span>Texto tarjeta</span>
+          <textarea name="hero_card_text" rows="3">{{ ui.get('hero_card_text', 'Coordinamos contabilidad, fiscal y nómina para que tomes decisiones seguras y oportunas.') }}</textarea>
+        </label>
+      </div>
+      <div class="form-grid">
+        <div class="metric-group">
+          <h3>Métrica 1</h3>
+          <label class="field">
+            <span>Valor</span>
+            <input type="text" name="metric_1_value" value="{{ ui.get('metric_1_value', '350') }}" />
+          </label>
+          <label class="field">
+            <span>Prefijo</span>
+            <input type="text" name="metric_1_prefix" value="{{ ui.get('metric_1_prefix', '+') }}" />
+          </label>
+          <label class="field">
+            <span>Sufijo</span>
+            <input type="text" name="metric_1_suffix" value="{{ ui.get('metric_1_suffix', '') }}" />
+          </label>
+          <label class="field">
+            <span>Etiqueta</span>
+            <input type="text" name="metric_1_label" value="{{ ui.get('metric_1_label', 'clientes activos') }}" />
+          </label>
+        </div>
+        <div class="metric-group">
+          <h3>Métrica 2</h3>
+          <label class="field">
+            <span>Valor</span>
+            <input type="text" name="metric_2_value" value="{{ ui.get('metric_2_value', '12') }}" />
+          </label>
+          <label class="field">
+            <span>Prefijo</span>
+            <input type="text" name="metric_2_prefix" value="{{ ui.get('metric_2_prefix', '') }}" />
+          </label>
+          <label class="field">
+            <span>Sufijo</span>
+            <input type="text" name="metric_2_suffix" value="{{ ui.get('metric_2_suffix', '') }}" />
+          </label>
+          <label class="field">
+            <span>Etiqueta</span>
+            <input type="text" name="metric_2_label" value="{{ ui.get('metric_2_label', 'trayectoria') }}" />
+          </label>
+        </div>
+        <div class="metric-group">
+          <h3>Métrica 3</h3>
+          <label class="field">
+            <span>Valor</span>
+            <input type="text" name="metric_3_value" value="{{ ui.get('metric_3_value', '98') }}" />
+          </label>
+          <label class="field">
+            <span>Prefijo</span>
+            <input type="text" name="metric_3_prefix" value="{{ ui.get('metric_3_prefix', '') }}" />
+          </label>
+          <label class="field">
+            <span>Sufijo</span>
+            <input type="text" name="metric_3_suffix" value="{{ ui.get('metric_3_suffix', '%') }}" />
+          </label>
+          <label class="field">
+            <span>Etiqueta</span>
+            <input type="text" name="metric_3_label" value="{{ ui.get('metric_3_label', 'satisfacción') }}" />
+          </label>
+        </div>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Secciones de identidad y servicios</h2>
+      <div class="form-grid">
+        <label class="field">
+          <span>Eyebrow identidad</span>
+          <input type="text" name="index_identity_eyebrow" value="{{ ui.get('index_identity_eyebrow', 'Identidad') }}" />
+        </label>
+        <label class="field">
+          <span>Eyebrow servicios</span>
+          <input type="text" name="index_services_eyebrow" value="{{ ui.get('index_services_eyebrow', 'Lo que hacemos') }}" />
+        </label>
+        <label class="field field--full">
+          <span>Intro servicios</span>
+          <textarea name="index_services_intro" rows="2">{{ ui.get('index_services_intro', 'Servicios diseñados para simplificar tu operación y fortalecer tu estrategia.') }}</textarea>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Contacto y formulario</h2>
+      <div class="form-grid">
+        <label class="field">
+          <span>Título contacto</span>
+          <input type="text" name="contact_heading" value="{{ ui.get('contact_heading', 'Hablemos de tu crecimiento') }}" />
+        </label>
+        <label class="field">
+          <span>Título formulario</span>
+          <input type="text" name="contact_form_heading" value="{{ ui.get('contact_form_heading', 'Envíanos un mensaje') }}" />
+        </label>
+        <label class="field">
+          <span>Botón formulario</span>
+          <input type="text" name="contact_button_label" value="{{ ui.get('contact_button_label', 'Enviar') }}" />
+        </label>
+        <label class="field">
+          <span>Etiqueta WhatsApp</span>
+          <input type="text" name="contact_label_whatsapp" value="{{ ui.get('contact_label_whatsapp', 'WhatsApp') }}" />
+        </label>
+        <label class="field">
+          <span>Etiqueta Email</span>
+          <input type="text" name="contact_label_email" value="{{ ui.get('contact_label_email', 'Email') }}" />
+        </label>
+        <label class="field">
+          <span>Etiqueta Teléfono</span>
+          <input type="text" name="contact_label_phone" value="{{ ui.get('contact_label_phone', 'Teléfono') }}" />
+        </label>
+        <label class="field">
+          <span>Etiqueta Dirección</span>
+          <input type="text" name="contact_label_address" value="{{ ui.get('contact_label_address', 'Dirección') }}" />
+        </label>
+        <label class="field">
+          <span>Contacto directo</span>
+          <input type="text" name="contact_direct_label" value="{{ ui.get('contact_direct_label', 'Contacto Directo') }}" />
+        </label>
+        <label class="field">
+          <span>Campo Nombre</span>
+          <input type="text" name="contact_label_name" value="{{ ui.get('contact_label_name', 'Nombre') }}" />
+        </label>
+        <label class="field">
+          <span>Campo Correo</span>
+          <input type="text" name="contact_label_email_field" value="{{ ui.get('contact_label_email_field', 'Correo') }}" />
+        </label>
+        <label class="field">
+          <span>Campo Mensaje</span>
+          <input type="text" name="contact_label_message" value="{{ ui.get('contact_label_message', 'Mensaje') }}" />
+        </label>
+        <label class="field field--full">
+          <span>Mensaje envío exitoso</span>
+          <textarea name="contact_alert_sent" rows="2">{{ ui.get('contact_alert_sent', 'Mensaje enviado. Te responderemos pronto.') }}</textarea>
+        </label>
+        <label class="field field--full">
+          <span>Mensaje envío pendiente</span>
+          <textarea name="contact_alert_pending" rows="2">{{ ui.get('contact_alert_pending', 'Mensaje registrado. Configura el correo SMTP para envío automático.') }}</textarea>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Redes</h2>
+      <div class="form-grid">
+        <label class="field">
+          <span>Etiqueta Facebook</span>
+          <input type="text" name="social_label_facebook" value="{{ ui.get('social_label_facebook', 'Facebook') }}" />
+        </label>
+        <label class="field">
+          <span>Etiqueta Instagram</span>
+          <input type="text" name="social_label_instagram" value="{{ ui.get('social_label_instagram', 'Instagram') }}" />
+        </label>
+        <label class="field">
+          <span>Etiqueta X</span>
+          <input type="text" name="social_label_x" value="{{ ui.get('social_label_x', 'X') }}" />
+        </label>
+        <label class="field">
+          <span>Etiqueta LinkedIn</span>
+          <input type="text" name="social_label_linkedin" value="{{ ui.get('social_label_linkedin', 'LinkedIn') }}" />
+        </label>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Nosotros</h2>
+      <div class="form-grid">
+        <label class="field">
+          <span>Eyebrow Nosotros</span>
+          <input type="text" name="about_eyebrow" value="{{ ui.get('about_eyebrow', 'Nosotros') }}" />
+        </label>
+        <label class="field">
+          <span>Eyebrow Equipo</span>
+          <input type="text" name="team_eyebrow" value="{{ ui.get('team_eyebrow', 'Personas') }}" />
+        </label>
+        <label class="field field--full">
+          <span>Intro equipo</span>
+          <textarea name="team_intro" rows="2">{{ ui.get('team_intro', 'Profesionales con experiencia en contabilidad, fiscal y estrategia financiera.') }}</textarea>
+        </label>
+        <label class="field">
+          <span>Título ubicación</span>
+          <input type="text" name="location_heading" value="{{ ui.get('location_heading', 'Estamos en el corazón financiero') }}" />
+        </label>
+        <label class="field field--full">
+          <span>Intro ubicación</span>
+          <textarea name="location_intro" rows="2">{{ ui.get('location_intro', 'Visítanos en nuestras oficinas o agenda una reunión virtual con el equipo.') }}</textarea>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Aprende más</h2>
+      <div class="form-grid">
+        <label class="field">
+          <span>Eyebrow Aprende más</span>
+          <input type="text" name="learn_more_eyebrow" value="{{ ui.get('learn_more_eyebrow', 'Conocimiento') }}" />
+        </label>
+        <label class="field">
+          <span>Etiqueta enlace</span>
+          <input type="text" name="learn_more_link_label" value="{{ ui.get('learn_more_link_label', 'Ver publicación') }}" />
+        </label>
+      </div>
+    </div>
+
+    <div class="form-card">
+      <h2>Footer</h2>
+      <div class="form-grid">
+        <label class="field">
+          <span>Título footer</span>
+          <input type="text" name="footer_title" value="{{ ui.get('footer_title', 'Atención directa') }}" />
+        </label>
+        <label class="field">
+          <span>Título contacto</span>
+          <input type="text" name="footer_contact_title" value="{{ ui.get('footer_contact_title', 'Contacto') }}" />
+        </label>
+        <label class="field">
+          <span>Título redes</span>
+          <input type="text" name="footer_social_title" value="{{ ui.get('footer_social_title', 'Redes') }}" />
+        </label>
+        <label class="field field--full">
+          <span>Texto footer</span>
+          <textarea name="footer_text" rows="2">{{ ui.get('footer_text', 'Agenda una cita con nuestro equipo y recibe un diagnóstico inicial.') }}</textarea>
+        </label>
+        <label class="field field--full">
+          <span>Derechos</span>
+          <textarea name="footer_bottom" rows="2">{{ ui.get('footer_bottom', '© 2026 Agencia Contable. Todos los derechos reservados.') }}</textarea>
+        </label>
+      </div>
+    </div>
+
+    <div class="form-actions">
+      <button class="button primary" type="submit">Guardar contenido</button>
+    </div>
+  </form>
+</section>
+{% endblock %}
