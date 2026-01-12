@@ -30,17 +30,27 @@
           {% endif %}
         </div>
       </div>
-      <div class="team-gallery">
-        {% for member in team %}
-        <figure class="team-portrait" data-name="{{ member.name }}" data-role="{{ member.role }}" data-bio="{{ member.bio }}" tabindex="0" role="button" aria-label="Perfil de {{ member.name }}" data-reveal>
-          {% if member.image_url %}
-          <img src="{{ member.image_url }}" alt="{{ member.name }}" />
-          {% else %}
-          <div class="team-placeholder">{{ member.name[0] }}</div>
-          {% endif %}
-        </figure>
-        {% endfor %}
+      {% if team %}
+      <div class="team-carousel" data-reveal>
+        <div class="team-frame">
+          <div class="team-track" aria-live="polite">
+            {% for member in team %}
+            <figure class="team-slide" data-name="{{ member.name }}" data-role="{{ member.role }}" data-bio="{{ member.bio }}">
+              {% if member.image_url %}
+              <img src="{{ member.image_url }}" alt="{{ member.name }}" />
+              {% else %}
+              <div class="team-placeholder">{{ member.name[0] }}</div>
+              {% endif %}
+            </figure>
+            {% endfor %}
+          </div>
+        </div>
+        <div class="team-controls">
+          <button class="team-btn prev" type="button" aria-label="Anterior">&#8249;</button>
+          <button class="team-btn next" type="button" aria-label="Siguiente">&#8250;</button>
+        </div>
       </div>
+      {% endif %}
     </div>
   </div>
 </section>

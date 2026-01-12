@@ -9,6 +9,38 @@
   </div>
 </section>
 
+{% if posts %}
+<section class="post-carousel">
+  <div class="container">
+    <div class="carousel-card" data-reveal>
+      <div class="carousel-header">
+        <span class="eyebrow">{{ ui.get("learn_more_slider_eyebrow", "Perspectivas") }}</span>
+        <div class="carousel-controls">
+          <button class="carousel-btn prev" type="button" aria-label="Anterior">&#8249;</button>
+          <button class="carousel-btn next" type="button" aria-label="Siguiente">&#8250;</button>
+        </div>
+      </div>
+      <div class="carousel-track" aria-live="polite">
+        {% for post in posts %}
+        <article class="carousel-slide" aria-hidden="{% if not loop.first %}true{% else %}false{% endif %}">
+          <span class="carousel-topic">{{ post.title }}</span>
+          <p class="carousel-quote">{{ post.description }}</p>
+          <span class="carousel-meta">{{ ui.get("learn_more_slider_meta", "Agencia Contable") }}</span>
+        </article>
+        {% endfor %}
+      </div>
+      <div class="carousel-dots">
+        {% for post in posts %}
+        <button class="carousel-dot{% if loop.first %} is-active{% endif %}" type="button" aria-label="Ir a {{ post.title }}">
+          <span class="carousel-progress" aria-hidden="true"></span>
+        </button>
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+</section>
+{% endif %}
+
 <section class="posts">
   <div class="container">
     <div class="post-grid">

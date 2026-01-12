@@ -23,9 +23,16 @@ except Exception:  # pragma: no cover - optional dependency
 def _firebase_bucket():
     if not firebase_admin or not settings.firebase_credentials or not settings.firebase_bucket:
         return None
+    bucket_name = settings.firebase_bucket
+    if bucket_name.startswith("gs://"):
+        bucket_name = bucket_name[5:]
+    bucket_name = bucket_name.rstrip("/")
+    credentials_path = Path(settings.firebase_credentials)
+    if not credentials_path.is_absolute():
+        credentials_path = Path(__file__).resolve().parent.parent / credentials_path
     if not firebase_admin._apps:
-        cred = credentials.Certificate(settings.firebase_credentials)
-        firebase_admin.initialize_app(cred, {"storageBucket": settings.firebase_bucket})
+        cred = credentials.Certificate(str(credentials_path))
+        firebase_admin.initialize_app(cred, {"storageBucket": bucket_name})
     return storage.bucket()
 
 

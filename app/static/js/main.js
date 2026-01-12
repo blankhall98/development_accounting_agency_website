@@ -100,44 +100,185 @@ if (metricValues.length) {
   }
 }
 
-const teamGallery = document.querySelector('.team-gallery');
+const teamCarousel = document.querySelector('.team-carousel');
 const teamDetail = document.querySelector('.team-detail');
 
-if (teamGallery && teamDetail) {
-  const portraits = teamGallery.querySelectorAll('.team-portrait[data-name]');
+if (teamCarousel && teamDetail) {
+  const track = teamCarousel.querySelector('.team-track');
+  const slides = teamCarousel.querySelectorAll('.team-slide');
+  const prevBtn = teamCarousel.querySelector('.team-btn.prev');
+  const nextBtn = teamCarousel.querySelector('.team-btn.next');
   const nameEl = teamDetail.querySelector('.team-name');
   const roleEl = teamDetail.querySelector('.team-role');
   const bioEl = teamDetail.querySelector('.team-bio');
+  let currentIndex = 0;
+  let autoTimer;
+  const carouselInterval = 5000;
 
-  const setActivePortrait = (portrait) => {
-    if (!portrait || !nameEl || !roleEl || !bioEl) {
+  if (slides.length <= 1) {
+    teamCarousel.classList.add('is-single');
+  }
+
+  const updateDetail = (slide) => {
+    if (!slide || !nameEl || !roleEl || !bioEl) {
       return;
     }
-
-    portraits.forEach((item) => item.classList.toggle('is-active', item === portrait));
-
     teamDetail.classList.add('is-updating');
     window.setTimeout(() => {
-      nameEl.textContent = portrait.dataset.name || '';
-      roleEl.textContent = portrait.dataset.role || '';
-      bioEl.textContent = portrait.dataset.bio || '';
+      nameEl.textContent = slide.dataset.name || '';
+      roleEl.textContent = slide.dataset.role || '';
+      bioEl.textContent = slide.dataset.bio || '';
       teamDetail.classList.remove('is-updating');
     }, 120);
   };
 
-  const firstPortrait = portraits[0];
-  if (firstPortrait) {
-    setActivePortrait(firstPortrait);
+  const updateCarousel = (index) => {
+    if (!track || !slides.length) {
+      return;
+    }
+    currentIndex = (index + slides.length) % slides.length;
+    slides.forEach((slide, slideIndex) => {
+      const isActive = slideIndex === currentIndex;
+      slide.classList.toggle('is-active', isActive);
+      slide.setAttribute('aria-hidden', isActive ? 'false' : 'true');
+    });
+    updateDetail(slides[currentIndex]);
+  };
+
+  const startAuto = () => {
+    if (prefersReducedMotion || slides.length <= 1) {
+      return;
+    }
+    window.clearInterval(autoTimer);
+    autoTimer = window.setInterval(() => {
+      updateCarousel(currentIndex + 1);
+    }, carouselInterval);
+  };
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => {
+      updateCarousel(currentIndex - 1);
+      startAuto();
+    });
+
+    nextBtn.addEventListener('click', () => {
+      updateCarousel(currentIndex + 1);
+      startAuto();
+    });
   }
 
-  portraits.forEach((portrait) => {
-    portrait.addEventListener('mouseenter', () => setActivePortrait(portrait));
-    portrait.addEventListener('focus', () => setActivePortrait(portrait));
-    portrait.addEventListener('keydown', (event) => {
-      if (event.key === 'Enter' || event.key === ' ') {
-        event.preventDefault();
-        setActivePortrait(portrait);
+  updateCarousel(0);
+  startAuto();
+}
+
+const carouselCard = document.querySelector('.carousel-card');
+
+if (carouselCard) {
+  const track = carouselCard.querySelector('.carousel-track');
+  const slides = carouselCard.querySelectorAll('.carousel-slide');
+  const dots = carouselCard.querySelectorAll('.carousel-dot');
+  const progressBars = carouselCard.querySelectorAll('.carousel-progress');
+  const prevBtn = carouselCard.querySelector('.carousel-btn.prev');
+  const nextBtn = carouselCard.querySelector('.carousel-btn.next');
+  let currentIndex = 0;
+  let isPaused = false;
+  let autoTimer;
+  let timerStart = 0;
+  let remainingTime = 0;
+  const carouselInterval = 9000;
+
+  if (slides.length <= 1) {
+    carouselCard.classList.add('is-single');
+  }
+
+  const clearTimer = () => {
+    window.clearTimeout(autoTimer);
+  };
+
+  const scheduleTimer = (duration) => {
+    if (prefersReducedMotion || slides.length <= 1) {
+      return;
+    }
+    clearTimer();
+    remainingTime = duration;
+    timerStart = performance.now();
+    autoTimer = window.setTimeout(() => {
+      updateCarousel(currentIndex + 1);
+    }, duration);
+  };
+
+  const restartProgress = () => {
+    progressBars.forEach((bar, barIndex) => {
+      bar.style.animation = 'none';
+      bar.style.transform = 'scaleX(0)';
+      void bar.offsetWidth;
+      if (barIndex === currentIndex && !prefersReducedMotion) {
+        bar.style.animation = `carousel-progress ${carouselInterval}ms linear forwards`;
       }
     });
+
+    if (!isPaused) {
+      scheduleTimer(carouselInterval);
+    }
+  };
+
+  const updateCarousel = (index) => {
+    if (!track || !slides.length) {
+      return;
+    }
+
+    currentIndex = (index + slides.length) % slides.length;
+    track.style.transform = `translateX(-${currentIndex * 100}%)`;
+
+    slides.forEach((slide, slideIndex) => {
+      slide.setAttribute('aria-hidden', slideIndex !== currentIndex);
+    });
+
+    dots.forEach((dot, dotIndex) => {
+      dot.classList.remove('is-active');
+      if (dotIndex === currentIndex) {
+        dot.classList.add('is-active');
+      }
+    });
+
+    restartProgress();
+  };
+
+  if (prevBtn && nextBtn) {
+    prevBtn.addEventListener('click', () => {
+      updateCarousel(currentIndex - 1);
+    });
+
+    nextBtn.addEventListener('click', () => {
+      updateCarousel(currentIndex + 1);
+    });
+  }
+
+  dots.forEach((dot, index) => {
+    dot.addEventListener('click', () => {
+      updateCarousel(index);
+    });
   });
+
+  carouselCard.addEventListener('mouseenter', () => {
+    if (isPaused) {
+      return;
+    }
+    isPaused = true;
+    carouselCard.classList.add('is-paused');
+    clearTimer();
+    const elapsed = performance.now() - timerStart;
+    remainingTime = Math.max(carouselInterval - elapsed, 0);
+  });
+
+  carouselCard.addEventListener('mouseleave', () => {
+    if (!isPaused) {
+      return;
+    }
+    isPaused = false;
+    carouselCard.classList.remove('is-paused');
+    scheduleTimer(remainingTime || carouselInterval);
+  });
+
+  updateCarousel(0);
 }
