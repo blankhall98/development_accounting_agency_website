@@ -288,20 +288,18 @@ a {
   margin-top: 6px;
 }
 
-.admin-hero-card {
+.admin-hero-meta {
   position: relative;
   z-index: 1;
   display: grid;
   gap: 14px;
   align-content: start;
   text-align: left;
-  background: rgba(255, 255, 255, 0.65);
-  border: 1px solid rgba(163, 152, 139, 0.35);
-  border-radius: 18px;
-  padding: 18px;
+  padding-left: 28px;
+  border-left: 1px solid rgba(123, 113, 103, 0.25);
 }
 
-.admin-hero-card strong {
+.admin-hero-meta strong {
   font-size: 20px;
   display: block;
 }
@@ -414,6 +412,10 @@ a {
   gap: 20px;
   grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
   align-items: start;
+}
+
+.form-grid--two {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
 }
 
 .form-stack {
@@ -681,8 +683,16 @@ a {
     gap: 20px;
   }
 
-  .admin-hero-card {
+  .admin-hero-meta {
     text-align: left;
+    padding-left: 0;
+    border-left: none;
+    border-top: 1px solid rgba(123, 113, 103, 0.25);
+    padding-top: 18px;
+  }
+
+  .form-grid--two {
+    grid-template-columns: 1fr;
   }
 }
 
